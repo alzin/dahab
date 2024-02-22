@@ -126,3 +126,83 @@ def save_project():
     if not st.session_state.saved:
         st.session_state.saved = True
         created_at = datetime.datetime.now().isoformat()
+
+        db_service.save_project(
+            st.session_state.user["userId"],
+            created_at,
+            st.session_state.requirements,
+            st.session_state.content,
+            created_at=created_at
+        )
+        st.balloons()
+
+
+def display_generated_content():
+    content_container = st.container(border=True)
+    content_container.write(st.session_state.content)
+
+
+def display_pdf(data):
+    pdf = MarkdownToPDFUI.convert_to_pdf(data)
+    MarkdownToPDFUI.present(pdf)
+
+
+def get_project_detail(attr):
+    return st.session_state.proeject_details[st.session_state.selected_project][attr]
+
+
+def show_selected_project():
+    container = st.container(border=True)
+    container.title(get_project_detail("project_name"))
+    container.divider()
+    container.header("Requirements:")
+    container.write(get_project_detail("requirements"))
+    container.divider()
+    container.write(get_project_detail("content"))
+
+
+def refresh():
+    st.session_state.refresh_key += 1
+    st.rerun()
+
+
+def create_software_button():
+    if st.sidebar.button("Create Software", key="create_software"):
+        reset_session_state()
+        refresh()
+
+
+def process_authenticated_user_flow():
+    fetch_and_display_projects(db_service)
+    if st.session_state.selected_project != "Select a project":
+        show_selected_project()
+        display_pdf(get_project_detail("content"))
+        create_software_button()
+    elif not st.session_state.form_submitted:
+        create_software_ui()
+    elif st.session_state.first_run:
+        st.session_state.first_run = False
+        process_requirements()
+    elif st.session_state.show_questions:
+        qa(st.session_state.questions, process_after_getting_answers)
+    else:
+        display_generated_content()
+        display_pdf(st.session_state.content)
+        save_project()
+        create_software_button()
+    logout(auth_service)
+
+
+def main():
+    initialize_session_state()
+    apply_css("css/wave.css")
+
+    st.session_state.user = auth_service.validate_token()
+    if st.session_state.user:
+        process_authenticated_user_flow()
+    else:
+        guest_ui(auth_service)
+
+
+if __name__ == "__main__":
+    main()
