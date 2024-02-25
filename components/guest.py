@@ -4,7 +4,7 @@ from components.login import login_ui
 from components.signup import signup_ui
 
 
-def guest_ui(auth_service):
+def guest_ui(db_service, auth_service):
 
     with st.sidebar:
         page = option_menu("Menu", ["Home", "Login", "Signup"], icons=[
@@ -45,4 +45,4 @@ def guest_ui(auth_service):
     elif page == "Login":
         login_ui(auth_service)
     else:
-        signup_ui(auth_service)
+        signup_ui(db_service, auth_service)
