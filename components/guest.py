@@ -2,18 +2,46 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from components.login import login_ui
 from components.signup import signup_ui
-import webbrowser
 
 
 def guest_ui(auth_service):
 
     with st.sidebar:
-        page = option_menu("Main Menu", ["Slash Code AI", "Login", "Signup"], icons=[
-            'rocket-takeoff', 'door-open', 'pencil-square'], menu_icon="cast", default_index=1)
+        page = option_menu("Menu", ["Home", "Login", "Signup"], icons=[
+            'house', 'door-open', 'pencil-square'], menu_icon="cast", default_index=1)
 
-    if page == "Slash Code AI":
-        url = "https://rezkaudi.github.io/TriibeTask"
-        webbrowser.open_new_tab(url)
+    if page == "Home":
+        st.title("Welcome to Slash Code AI")
+
+        custom_css = """
+        <style>
+            .custom-button {
+                background-color: #0D1116; 
+                border: 2px solid; 
+                border-radius: 15px; 
+                padding: 10px; 
+                cursor: pointer; 
+                font-weight: bold; 
+                text-align: center;
+                display: inline-block;
+                text-decoration: none;
+                color: white;
+            }
+            .custom-button:hover {
+                background-color: #1B2938;
+                border-color: #F0F6FC;
+                color: #F0F6FC;
+            }
+        </style>
+        """
+
+        # Inject the CSS
+        st.markdown(custom_css, unsafe_allow_html=True)
+
+        # Create a clickable button with the custom style
+        link_html = f'<a class="custom-button" href="https://rezkaudi.github.io/TriibeTask/" target="_blank">Slash Code AI</a>'
+        st.markdown(link_html, unsafe_allow_html=True)
+
     elif page == "Login":
         login_ui(auth_service)
     else:
