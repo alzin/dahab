@@ -11,7 +11,7 @@ def login_ui(auth_service):
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
 
-    if st.button("Login"):
+    if st.button("Login", type='primary'):
         if is_empty(email):
             st.warning("Please provide your email")
             return

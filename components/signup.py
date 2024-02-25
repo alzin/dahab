@@ -10,7 +10,7 @@ def signup_ui(auth_service):
     st.title("Signup")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
-    if st.button("Signup"):
+    if st.button("Signup", type='primary'):
         if is_empty(email):
             st.warning("Please provide your email")
             return
