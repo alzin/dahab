@@ -21,6 +21,6 @@ def login_ui(auth_service):
         try:
             user = auth_service.sign_in(email, password)
             st.session_state.user = user
-            # st.rerun()
+            st.success(f"Welcome {user['email']}")
         except Exception as e:
             st.error(extract_error_message(str(e)))
