@@ -15,3 +15,10 @@ class DatabaseService:
 
     def get_projects(self, user_id):
         return self.db.child("projects").child(user_id).get()
+
+    def save_user_name_email(self, name, email):
+        user_data = {
+            "name": name,
+            "email": email
+        }
+        self.db.child("users").push(user_data)

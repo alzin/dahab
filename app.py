@@ -201,7 +201,7 @@ def main():
     if st.session_state.user:
         process_authenticated_user_flow()
     else:
-        guest_ui(auth_service)
+        guest_ui(db_service, auth_service)
 
 
 if __name__ == "__main__":

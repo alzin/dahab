@@ -37,7 +37,7 @@ def qa(questions_list, func):
     if not st.session_state.submitted_all:
         with st.form(key=f'response_form_{st.session_state.current_question_index}'):
             user_input = st.text_input(
-                "Your Answer:", key=f"user_input_{st.session_state.current_question_index}")
+                "", key=f"user_input_{st.session_state.current_question_index}")
             submit_button = st.form_submit_button(
                 label='Submit', on_click=handle_next_question)
 
