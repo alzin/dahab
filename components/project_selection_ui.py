@@ -15,7 +15,7 @@ def fetch_and_display_projects(db_service):
 
         st.session_state.proeject_details = project_details
         st.session_state.selected_project = st.sidebar.selectbox(
-            "",
+            "Projects:",
             options,
             index=st.session_state.default_index,
             key=f'selectbox_{st.session_state.refresh_key}'

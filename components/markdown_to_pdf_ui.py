@@ -16,7 +16,8 @@ class MarkdownToPDFUI:
                 label="Download PDF",
                 data=pdf_file,
                 file_name="document.pdf",
-                mime="application/pdf"
+                mime="application/pdf",
+                type="primary",
             )
         else:
             st.error("Failed to generate PDF")

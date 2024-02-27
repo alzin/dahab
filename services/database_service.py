@@ -3,13 +3,14 @@ class DatabaseService:
     def __init__(self, db):
         self.db = db
 
-    def save_project(self, user_id, project_name, requirements, content, created_at):
+    def save_project(self, user_id, project_name, requirements, content, created_at, thread_id, assistant_id):
         project_data = {
-            "user_id": user_id,
             "project_name": project_name,
             "requirements": requirements,
             "content": content,
-            "created_at": created_at
+            "created_at": created_at,
+            "thread_id": thread_id,
+            "assistant_id": assistant_id
         }
         self.db.child("projects").child(user_id).push(project_data)
 

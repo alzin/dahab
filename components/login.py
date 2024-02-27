@@ -8,8 +8,8 @@ def is_empty(value):
 
 def login_ui(auth_service):
     st.title("Login")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+    email = st.text_input(label="Email")
+    password = st.text_input(label="Password", type="password")
 
     if st.button("Login", type='primary'):
         if is_empty(email):

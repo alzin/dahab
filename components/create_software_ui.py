@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit_antd_components as sac
 
 
 def create_software_ui():
@@ -9,7 +10,7 @@ def create_software_ui():
         key="user_input",
         help="Please detail your requirements as clearly as possible."
     )
-    if st.button("Submit", type="primary"):
+    if st.button("Start Over", type="primary"):
         if not user_input:
             st.error("Please enter your requirements.")
             return

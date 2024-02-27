@@ -21,7 +21,9 @@ def initialize_session_state():
         "saved": False,
         "proeject_details": {},
         "default_index": 0,
-        "refresh_key": 0
+        "refresh_key": 0,
+        "project_name": "",
+        "show_next_work": False,
     }
     for key, default_value in defaults.items():
         if key not in st.session_state:
@@ -48,7 +50,9 @@ def reset_session_state():
         "selected_project": "Select a project",
         "saved": False,
         "proeject_details": {},
-        "default_index": 0
+        "default_index": 0,
+        "project_name": "",
+        "show_next_work": False,
     }
     for key, default_value in defaults.items():
         st.session_state[key] = default_value

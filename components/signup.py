@@ -8,9 +8,9 @@ def is_empty(value):
 
 def signup_ui(db_service, auth_service):
     st.title("Signup")
-    name = st.text_input("Name")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+    name = st.text_input(label="Name")
+    email = st.text_input(label="Email")
+    password = st.text_input(label="Password", type="password")
     if st.button("Signup", type='primary'):
         if is_empty(name):
             st.warning("Please provide your name")
