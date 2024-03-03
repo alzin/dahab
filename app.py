@@ -38,7 +38,8 @@ cookie = stx.CookieManager()
 auth_service = AuthService(firebase_service.auth, cookie)
 db_service = DatabaseService(firebase_service.db)
 
-next_work_container = st.container(border=True)
+placeholder = st.empty()
+next_work_container = placeholder.container()
 
 
 def init_thread():
@@ -59,8 +60,9 @@ def is_null_or_wait(next_work):
 
 
 def display_next_work(next_work):
+    with next_work_container:
+        next_work_container.write("_ " + next_work)
     print(next_work)
-    next_work_container.caption("_ " + next_work)
 
 
 def extract_next_work_and_content(messages):
@@ -72,19 +74,15 @@ def extract_next_work_and_content(messages):
 
 
 def extract_project_title(s):
-    pattern = r"Project Title: (.*?)\s*Q1:"
+    pattern = r"Project Title: (.*?)\s*\n"
     match = re.search(pattern, s)
     if match:
-        return match.group(1)
+        return match.group(1).strip()
     else:
-        return "No project title found."
+        return "YOUR PROJECT DETAILS"
 
 
 def process_thread_interaction(initial_data):
-    """
-    Processes interaction with the thread based on the initial data provided,
-    handles the logic to continue processing based on responses.
-    """
     run = openai.submit_message_to_thread(
         thread_id(),
         initial_data,
@@ -93,24 +91,19 @@ def process_thread_interaction(initial_data):
     openai.wait_for_response(thread_id(), run.id)
     messages = openai.get_response(thread_id())
     next_work, content = extract_next_work_and_content(messages)
+    print(content)
     display_next_work(next_work)
     st.session_state.content += content
     return next_work
 
 
 def continue_processing(next_work):
-    """
-    Continues processing based on the next work item.
-    """
     print("Continuing processing")
     while not is_null_or_wait(next_work):
         next_work = process_thread_interaction(next_work)
 
 
 def process_after_getting_answers():
-    """
-    Starts processing after getting initial answers, setting up any required state.
-    """
     Spinner.show("Please wait,<br /> Working on your requirements...")
     next_work = process_thread_interaction(st.session_state.qa_pairs)
     continue_processing(next_work)
@@ -134,17 +127,25 @@ def process_requirements():
     Spinner.remove()
 
     if is_null_or_wait(next_work):
+        print("GOT QUESTIONS")
         st.session_state.show_questions = True
         content = st.session_state.content
-        print("Content:", content)
+        print(content)
         st.session_state.project_name = extract_project_title(content)
-        print("Project name:", st.session_state.project_name)
+        print(st.session_state.project_name)
         extract_questions(content)
         # no need to write the questions so we need to reset the content
         st.session_state.content = ""
         st.rerun()
-    else:
-        print("No questions, no wait")
+    else:  # if there are no questions, continue processing
+        print("NO QUESTIONS")
+        content = st.session_state.content
+        print(content)
+        st.session_state.project_name = extract_project_title(content)
+        st.session_state.content += content
+        print(st.session_state.project_name)
+        # process the next work
+        continue_processing(next_work)
 
 
 def save_project():
@@ -209,7 +210,7 @@ def process_authenticated_user_flow():
         st.session_state.first_run = False
         process_requirements()
     elif st.session_state.show_questions:
-        qa(st.session_state.questions)
+        qa(st.session_state.questions, placeholder)
     elif st.session_state.show_next_work:
         process_after_getting_answers()
     else:
