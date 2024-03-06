@@ -2,7 +2,6 @@ import os
 import json
 import re
 import datetime
-# from util.css_loader import apply_css
 
 import streamlit as st
 import extra_streamlit_components as stx
@@ -24,17 +23,18 @@ from util.initialize_session_state import reset_session_state
 from util.spinner import Spinner
 
 st.set_page_config(
-    page_title="Slash Code AI",
+    page_title="JetCode",
     page_icon="🔥"
 )
 
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ASSISTANT_ID = os.getenv("ASSISTANT_ID")
 
-openai = OpenAIService(OPENAI_API_KEY)
+initialize_session_state()
+
 firebase_service = FirebaseService()
 cookie = stx.CookieManager()
+openai = OpenAIService()
 auth_service = AuthService(firebase_service.auth, cookie)
 db_service = DatabaseService(firebase_service.db)
 
@@ -198,7 +198,18 @@ def create_software_button():
         refresh()
 
 
+def get_openai_api_key():
+    new_key = st.sidebar.text_input(
+        "OpenAI API Key: *", value=cookie.get("openai_api_key"), type="password")
+    if st.session_state.openai_api_key != new_key:
+        st.session_state.openai_api_key = new_key
+        cookie.set("openai_api_key", new_key)
+
+
 def process_authenticated_user_flow():
+    get_openai_api_key()
+    global openai
+    openai = OpenAIService()
     fetch_and_display_projects(db_service)
     if st.session_state.selected_project != "Select a project":
         show_selected_project()
@@ -223,8 +234,6 @@ def process_authenticated_user_flow():
 
 def main():
     initialize_session_state()
-    # apply_css("css/wave.css")
-
     st.session_state.user = auth_service.validate_token()
     if st.session_state.user:
         process_authenticated_user_flow()

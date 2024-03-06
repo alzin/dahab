@@ -10,10 +10,12 @@ def create_software_ui():
         key="user_input",
         help="Please detail your requirements as clearly as possible."
     )
-    if st.button("Start Over", type="primary"):
+    if st.button("Start", type="primary"):
+        if not st.session_state.openai_api_key:
+            st.error("Please enter your OpenAI API key.")
+            return
         if not user_input:
             st.error("Please enter your requirements.")
             return
         st.session_state.requirements = user_input
         st.session_state.form_submitted = True
-        st.rerun()

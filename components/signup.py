@@ -24,7 +24,8 @@ def signup_ui(db_service, auth_service):
         try:
             user = auth_service.sing_up(email, password)
             st.session_state.user = user
-            db_service.save_user_name_email(name, email)
+            user_id = user["localId"]
+            db_service.save_user_name_email(user_id, name, email)
             st.success("User registered successfully!")
         except Exception as e:
             st.error(extract_error_message(str(e)))

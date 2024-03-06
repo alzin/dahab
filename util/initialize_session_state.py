@@ -24,11 +24,11 @@ def initialize_session_state():
         "refresh_key": 0,
         "project_name": "",
         "show_next_work": False,
+        "openai_api_key": "",
     }
     for key, default_value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = default_value
-            # st.write(f"Resetting {key} to {default_value}")
 
 
 def reset_session_state():
@@ -53,6 +53,7 @@ def reset_session_state():
         "default_index": 0,
         "project_name": "",
         "show_next_work": False,
+        "openai_api_key": "",
     }
     for key, default_value in defaults.items():
         st.session_state[key] = default_value
