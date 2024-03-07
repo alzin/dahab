@@ -193,6 +193,7 @@ def refresh():
 
 
 def create_software_button():
+    st.sidebar.markdown("---")
     if st.sidebar.button("Create Software", key="create_software"):
         reset_session_state()
         refresh()
@@ -201,6 +202,7 @@ def create_software_button():
 def get_openai_api_key():
     new_key = st.sidebar.text_input(
         "OpenAI API Key: *", value=cookie.get("openai_api_key"), type="password")
+    st.sidebar.markdown("---")
     if st.session_state.openai_api_key != new_key:
         st.session_state.openai_api_key = new_key
         cookie.set("openai_api_key", new_key)

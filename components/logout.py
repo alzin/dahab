@@ -14,7 +14,6 @@ def logout(auth_service):
     st.sidebar.markdown('#')
     st.sidebar.markdown('#')
     st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
     with st.sidebar.container():
         logout_clicked = sac.buttons(
             [sac.ButtonsItem(icon=sac.BsIcon(name='box-arrow-left', size=20))],
