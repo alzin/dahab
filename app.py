@@ -215,7 +215,8 @@ def process_authenticated_user_flow():
     fetch_and_display_projects(db_service)
     if st.session_state.selected_project != "Select a project":
         show_selected_project()
-        display_pdf(get_project_detail("content"))
+        if st.button("Generate PDF"):
+            display_pdf(get_project_detail("content"))
         create_software_button()
     elif not st.session_state.form_submitted:
         create_software_ui()
@@ -228,7 +229,8 @@ def process_authenticated_user_flow():
         process_after_getting_answers()
     else:
         display_generated_content()
-        display_pdf(st.session_state.content)
+        if st.button("Generate PDF"):
+            display_pdf(st.session_state.content)
         save_project()
         create_software_button()
     logout(auth_service)
