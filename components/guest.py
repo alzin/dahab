@@ -11,7 +11,7 @@ def guest_ui(db_service, auth_service):
             'house', 'door-open', 'pencil-square'], menu_icon="cast", default_index=1)
 
     if page == "Home":
-        st.title("Welcome to Slash Code AI")
+        st.title("Welcome to JetCode")
 
         custom_css = """
         <style>
@@ -34,12 +34,8 @@ def guest_ui(db_service, auth_service):
             }
         </style>
         """
-
-        # Inject the CSS
         st.markdown(custom_css, unsafe_allow_html=True)
-
-        # Create a clickable button with the custom style
-        link_html = f'<a class="custom-button" href="https://rezkaudi.github.io/TriibeTask/" target="_blank">Slash Code AI</a>'
+        link_html = f'<a class="custom-button" href="https://rezkaudi.github.io/JetCode/" target="_blank">JetCode</a>'
         st.markdown(link_html, unsafe_allow_html=True)
 
     elif page == "Login":

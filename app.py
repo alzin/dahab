@@ -2,7 +2,6 @@ import os
 import json
 import re
 import datetime
-# from util.css_loader import apply_css
 
 import streamlit as st
 import extra_streamlit_components as stx
@@ -23,18 +22,20 @@ from util.initialize_session_state import initialize_session_state
 from util.initialize_session_state import reset_session_state
 from util.spinner import Spinner
 
+initialize_session_state()
+
 st.set_page_config(
-    page_title="Slash Code AI",
+    page_title="JetCode",
     page_icon="🔥"
 )
 
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 ASSISTANT_ID = os.getenv("ASSISTANT_ID")
 
-openai = OpenAIService(OPENAI_API_KEY)
-firebase_service = FirebaseService()
 cookie = stx.CookieManager()
+
+openai = OpenAIService(st.session_state.openai_api_key)
+firebase_service = FirebaseService()
+
 auth_service = AuthService(firebase_service.auth, cookie)
 db_service = DatabaseService(firebase_service.db)
 
@@ -193,16 +194,28 @@ def refresh():
 
 
 def create_software_button():
+    st.sidebar.markdown("---")
     if st.sidebar.button("Create Software", key="create_software"):
         reset_session_state()
         refresh()
 
 
+def get_openai_api_key():
+    new_key = st.sidebar.text_input(
+        "OpenAI API Key: *", value=cookie.get("openai_api_key"), type="password")
+    st.sidebar.markdown("---")
+    if st.session_state.openai_api_key != new_key:
+        st.session_state.openai_api_key = new_key
+        cookie.set("openai_api_key", new_key)
+
+
 def process_authenticated_user_flow():
+    get_openai_api_key()
     fetch_and_display_projects(db_service)
     if st.session_state.selected_project != "Select a project":
         show_selected_project()
-        display_pdf(get_project_detail("content"))
+        if st.button("Generate PDF"):
+            display_pdf(st.session_state.content)
         create_software_button()
     elif not st.session_state.form_submitted:
         create_software_ui()
@@ -215,16 +228,14 @@ def process_authenticated_user_flow():
         process_after_getting_answers()
     else:
         display_generated_content()
-        display_pdf(st.session_state.content)
+        if st.button("Generate PDF"):
+            display_pdf(st.session_state.content)
         save_project()
         create_software_button()
     logout(auth_service)
 
 
 def main():
-    initialize_session_state()
-    # apply_css("css/wave.css")
-
     st.session_state.user = auth_service.validate_token()
     if st.session_state.user:
         process_authenticated_user_flow()

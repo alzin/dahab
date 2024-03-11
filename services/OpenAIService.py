@@ -8,7 +8,11 @@ class OpenAIService:
         self.openai = OpenAI(api_key=api_key)
 
     def create_thread(self):
-        return self.openai.beta.threads.create()
+        try:
+            return self.openai.beta.threads.create()
+        except Exception as e:
+            print(f"Error creating thread: {e}")
+            return None
 
     def submit_message_to_thread(self, thread_id, content, assistant_id):
         self.openai.beta.threads.messages.create(

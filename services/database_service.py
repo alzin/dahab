@@ -1,3 +1,5 @@
+import datetime
+
 
 class DatabaseService:
     def __init__(self, db):
@@ -17,9 +19,11 @@ class DatabaseService:
     def get_projects(self, user_id):
         return self.db.child("projects").child(user_id).get()
 
-    def save_user_name_email(self, name, email):
+    def save_user_name_email(self, id, name, email):
         user_data = {
+            "user_id": id,
             "name": name,
-            "email": email
+            "email": email,
+            "created_at": datetime.datetime.now().isoformat()
         }
         self.db.child("users").push(user_data)

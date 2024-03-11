@@ -4,24 +4,9 @@ import streamlit_antd_components as sac
 
 def logout(auth_service):
     st.sidebar.markdown('---')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
-    st.sidebar.markdown('#')
     with st.sidebar.container():
         logout_clicked = sac.buttons(
-            [sac.ButtonsItem(icon=sac.BsIcon(name='box-arrow-left', size=20))],
+            [sac.ButtonsItem(icon=sac.BsIcon(name='box-arrow-left', size=15))],
             align='left',
             variant='text',
             index=None,
