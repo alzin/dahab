@@ -1,4 +1,3 @@
-import os
 import time
 from openai import OpenAI
 
@@ -11,8 +10,23 @@ class OpenAIService:
         try:
             return self.openai.beta.threads.create()
         except Exception as e:
-            print(f"Error creating thread: {e}")
-            return None
+            # Convert the exception to a string to make it easier to handle
+            e_str = str(e)
+            err = ""
+            # Attempt to find and extract the message from the error
+            try:
+                # Assuming the error format is consistent and can be parsed as a dictionary
+                error_dict = eval(e_str.split(" - ")[1])
+                message = error_dict.get('error', {}).get(
+                    'message', 'Unknown error')
+                print(f"Error creating thread: {message}")
+                err = message
+            except (SyntaxError, IndexError, ValueError):
+                # Handle cases where the error string cannot be parsed as expected
+                print(
+                    f"Error creating thread, unable to parse error message: {e_str}")
+                err = e_str
+            return err
 
     def submit_message_to_thread(self, thread_id, content, assistant_id):
         self.openai.beta.threads.messages.create(

@@ -45,7 +45,11 @@ next_work_container = placeholder.container()
 
 def init_thread():
     if not st.session_state.thread:
-        st.session_state.thread = openai.create_thread()
+        thread = openai.create_thread()
+        if isinstance(thread, str):
+            st.error(thread)
+        else:
+            st.session_state.thread = thread
 
 
 def thread_id():
@@ -122,8 +126,11 @@ def process_requirements():
     """
     Processes initial requirements and decides the flow based on the presence of questions.
     """
-    Spinner.show("Please wait,<br /> Working on your requirements...")
     init_thread()
+    if not st.session_state.thread:
+        reset_session_state()
+        return
+    Spinner.show("Please wait,<br /> Working on your requirements...")
     next_work = process_thread_interaction(st.session_state.requirements)
     Spinner.remove()
 
