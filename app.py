@@ -30,6 +30,7 @@ st.set_page_config(
 )
 
 ASSISTANT_ID = os.getenv("ASSISTANT_ID")
+st.session_state.openai_api_key = os.getenv("OPENAI_API_KEY")
 
 cookie = stx.CookieManager()
 
@@ -217,7 +218,7 @@ def get_openai_api_key():
 
 
 def process_authenticated_user_flow():
-    get_openai_api_key()
+    # get_openai_api_key()
     fetch_and_display_projects(db_service)
     if st.session_state.selected_project != "Select a project":
         show_selected_project()
