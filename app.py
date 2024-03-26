@@ -26,7 +26,7 @@ initialize_session_state()
 
 st.set_page_config(
     page_title="JetCode",
-    page_icon="🔥"
+    page_icon="favicon.ico",
 )
 
 ASSISTANT_ID = os.getenv("ASSISTANT_ID")

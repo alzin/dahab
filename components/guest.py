@@ -35,7 +35,7 @@ def guest_ui(db_service, auth_service):
         </style>
         """
         st.markdown(custom_css, unsafe_allow_html=True)
-        link_html = f'<a class="custom-button" href="https://rezkaudi.github.io/JetCode/" target="_blank">JetCode</a>'
+        link_html = f'<a class="custom-button" href="https://www.jetcode.app/" target="_blank">JetCode</a>'
         st.markdown(link_html, unsafe_allow_html=True)
 
     elif page == "Login":
