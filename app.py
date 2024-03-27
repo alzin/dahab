@@ -194,6 +194,7 @@ def show_selected_project():
     container.write(get_project_detail("requirements"))
     container.header("Project Details")
     container.write(get_project_detail("content"))
+    st.session_state.content = get_project_detail("content")
 
 
 def refresh():
