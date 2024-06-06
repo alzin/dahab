@@ -29,13 +29,14 @@ st.set_page_config(
     page_icon="favicon.ico",
 )
 
-ASSISTANT_ID = os.getenv("ASSISTANT_ID")
+firebase_service = FirebaseService()
+
 st.session_state.openai_api_key = os.getenv("OPENAI_API_KEY")
+openai = OpenAIService(st.session_state.openai_api_key)
+
+ASSISTANT_ID = os.getenv("ASSISTANT_ID")
 
 cookie = stx.CookieManager()
-
-openai = OpenAIService(st.session_state.openai_api_key)
-firebase_service = FirebaseService()
 
 auth_service = AuthService(firebase_service.auth, cookie)
 db_service = DatabaseService(firebase_service.db)

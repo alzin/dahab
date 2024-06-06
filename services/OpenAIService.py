@@ -1,10 +1,12 @@
 import time
 from openai import OpenAI
+import streamlit as st
 
 
 class OpenAIService:
     def __init__(self, api_key):
-        self.openai = OpenAI(api_key=api_key)
+        self.openai = OpenAI(api_key=api_key, default_headers={
+                             "OpenAI-Beta": "assistants=v1"})
 
     def create_thread(self):
         try:
